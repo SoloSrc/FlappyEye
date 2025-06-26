@@ -1,0 +1,15 @@
+# VCPKG
+.vcpkg/
+
+# CMake
+build/
+out/
+
+# Visual Studio
+.vs/
+
+# Visual Studio Code
+.vscode/
+
+# Mac OS
+.DS_Store

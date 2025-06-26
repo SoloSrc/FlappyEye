@@ -1,0 +1,57 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "windows-base",
+      "hidden": true,
+      "inherits": "vcpkg-base",
+      "generator": "Ninja",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "toolset": {
+        "value": "v143,host=x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/build/install/${presetName}",
+        "CMAKE_C_COMPILER": "gcc.exe",
+        "CMAKE_CXX_COMPILER": "g++.exe",
+        "VCPKG_TARGET_TRIPLET": "x64-windows"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [
+            "Windows"
+          ]
+        }
+      },
+      "environment": {
+        "VCPKG_ROOT": "${sourceDir}/.vcpkg"
+      }
+    },
+    {
+      "name": "linux-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "inherits": "vcpkg-base",
+      "description": "Using compilers: C = /usr/bin/clang-18",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "/usr/bin/clang-18",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      },
+      "environment": {
+        "VCPKG_ROOT": "${sourceDir}/.vcpkg"
+      }
+    },
+    {
+      "name": "windows-debug",
+      "displayName": "x64 Debug",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    }
+  ]
+}
