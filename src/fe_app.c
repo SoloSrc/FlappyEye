@@ -4,15 +4,15 @@
 
 static bool a_initSDL(void)
 {
-    if (!SDL_SetAppMetadata("Flappy Eye", "0.1.0", "com.github.solosrc.flappyeye")) {
-        fprintf(stderr, "SDL_SetAppMetadata failed: %s\n", SDL_GetError());
-        return false;
-    }
-    if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
-        fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
-        return false;
-    }
-    return true;
+	if (!SDL_SetAppMetadata("Flappy Eye", "0.1.0", "com.github.solosrc.flappyeye")) {
+		fprintf(stderr, "SDL_SetAppMetadata failed: %s\n", SDL_GetError());
+		return false;
+	}
+	if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
+		fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
+		return false;
+	}
+	return true;
 }
 
 bool A_Init()
@@ -22,5 +22,5 @@ bool A_Init()
 
 void A_Quit(void)
 {
-    SDL_Quit();
+	SDL_Quit();
 }

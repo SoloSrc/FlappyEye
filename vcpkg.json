@@ -1,5 +1,5 @@
 {
-  "dependencies": [
-    "sdl3"
-  ]
+	"dependencies": [
+		"sdl3"
+	]
 }
