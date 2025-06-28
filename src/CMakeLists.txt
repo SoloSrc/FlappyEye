@@ -2,7 +2,7 @@ find_package(SDL3 CONFIG REQUIRED)
 
 add_executable(FlappyEye
   "main.c"
-)
+ "fe_app.h" "fe_app.c")
 target_compile_options(FlappyEye PRIVATE
   $<$<C_COMPILER_ID:MSVC>:/W4 /WX>
   $<$<NOT:$<C_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
