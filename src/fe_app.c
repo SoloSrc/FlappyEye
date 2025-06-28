@@ -1,11 +1,4 @@
-#include <SDL3/SDL.h>
-
 #include "fe_app.h"
-
-struct A_Context {
-	SDL_Window* window;
-	SDL_Renderer* renderer;
-};
 
 static bool a_initSDL(void)
 {
@@ -32,17 +25,12 @@ static bool a_createWindow(A_Context* ctx)
 	return true;
 }
 
-bool A_Init(A_Context** ctx)
+bool A_Init(A_Context* ctx)
 {
-	*ctx = malloc(sizeof(struct A_Context));
-	if (*ctx == NULL) {
-		fprintf(stderr, "Cannot allocate more memory!\n");
-		return false;
-	}
 	if (!a_initSDL()) {
 		return false;
 	}
-	if (!a_createWindow(*ctx)) {
+	if (!a_createWindow(ctx)) {
 		return false;
 	}
 	return true;

@@ -2,11 +2,11 @@
 
 #include "fe_app.h"
 
-A_Context* ctx;
+A_Context ctx;
 
 static void quit(void)
 {
-	A_Quit(ctx);
+	A_Quit(&ctx);
 }
 
 int main()
@@ -15,6 +15,6 @@ int main()
 	if (!A_Init(&ctx)) {
 		exit(EXIT_FAILURE);
 	}
-	A_Run(ctx);
+	A_Run(&ctx);
 	return 0;
 }

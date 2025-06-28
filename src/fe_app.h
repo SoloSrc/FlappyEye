@@ -7,12 +7,18 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include <SDL3/SDL.h>
+
 #ifndef FE_APP_H
 #define FE_APP_H
 
-typedef struct A_Context A_Context;
+typedef struct A_Context {
+	SDL_Window* window;
+	SDL_Renderer* renderer;
+} A_Context;
 
-bool A_Init(A_Context**);
+
+bool A_Init(A_Context*);
 void A_Quit(A_Context*);
 void A_Run(A_Context*);
 
