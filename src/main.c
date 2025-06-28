@@ -15,6 +15,7 @@ int main()
 	if (!A_Init(&ctx, "assets.hfd")) {
 		exit(EXIT_FAILURE);
 	}
+	A_LoadSprite(&ctx, "sprites/flappy.png");
 	A_Run(&ctx);
 	return 0;
 }

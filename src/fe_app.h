@@ -19,9 +19,12 @@ typedef struct A_Context {
 	zip_t* assets;
 } A_Context;
 
+typedef SDL_Texture* A_Sprite;
 
 bool A_Init(A_Context*, const char*);
 void A_Quit(A_Context*);
 void A_Run(A_Context*);
+
+A_Sprite A_LoadSprite(A_Context*, const char*);
 
 #endif // FE_APP_H

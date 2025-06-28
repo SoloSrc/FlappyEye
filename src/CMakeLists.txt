@@ -10,8 +10,8 @@ add_executable(FlappyEye
 	"main.c"
 	"fe_app.h"
 	"fe_app.c"
-	${assets}
-)
+	"fe_img.c"
+	${assets})
 
 target_compile_options(FlappyEye PRIVATE
 	$<$<C_COMPILER_ID:MSVC>:/W4 /WX>
