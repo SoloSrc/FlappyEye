@@ -13,13 +13,16 @@
 #ifndef FE_APP_H
 #define FE_APP_H
 
+#define STBDS_NO_SHORT_NAMES
+
+typedef SDL_Texture* A_Sprite;
+
 typedef struct A_Context {
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	zip_t* assets;
+	A_Sprite* sprites; // Array of loaded sprites, managed by stb_ds
 } A_Context;
-
-typedef SDL_Texture* A_Sprite;
 
 bool A_Init(A_Context*, const char*);
 void A_Quit(A_Context*);

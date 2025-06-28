@@ -1,6 +1,7 @@
 find_package(libzip CONFIG REQUIRED)
 find_package(SDL3 CONFIG REQUIRED)
 find_package(SDL3_image CONFIG REQUIRED)
+find_package(Stb REQUIRED)
 
 create_zip(assets
 	"sprites/flappy.png"
@@ -17,6 +18,8 @@ target_compile_options(FlappyEye PRIVATE
 	$<$<C_COMPILER_ID:MSVC>:/W4 /WX>
 	$<$<NOT:$<C_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
 )
+
+target_include_directories(FlappyEye PRIVATE ${Stb_INCLUDE_DIR})
 
 target_link_libraries(FlappyEye PRIVATE libzip::zip)
 target_link_libraries(FlappyEye PRIVATE SDL3::SDL3)

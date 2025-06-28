@@ -1,3 +1,6 @@
+#define STB_DS_IMPLEMENTATION
+#include "stb_ds.h"
+
 #include "fe_app.h"
 
 static bool a_initSDL(void)
@@ -51,6 +54,7 @@ bool A_Init(A_Context* ctx, const char* filepath)
 	ctx->assets = NULL;
 	ctx->window = NULL;
 	ctx->renderer = NULL;
+	ctx->sprites = NULL;
 
 	// inits
 	if (!a_initSDL()) {
@@ -68,6 +72,15 @@ bool A_Init(A_Context* ctx, const char* filepath)
 
 void A_Quit(A_Context* ctx)
 {
+	if (ctx->sprites != NULL) {
+		for (int i = 0; i < stbds_arrlen(ctx->sprites); i++) {
+			if (ctx->sprites[i] != NULL) {
+				SDL_DestroyTexture(ctx->sprites[i]);
+			}
+		}
+		stbds_arrfree(ctx->sprites);
+		ctx->sprites = NULL;
+	}
 	if (ctx->assets != NULL) {
 		zip_close(ctx->assets);
 	}

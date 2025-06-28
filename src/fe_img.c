@@ -1,4 +1,5 @@
 #include <SDL3_image/SDL_image.h>
+#include "stb_ds.h"
 
 #include "fe_app.h"
 
@@ -130,5 +131,6 @@ A_Sprite A_LoadSprite(A_Context* ctx, const char* path)
 		);
 		return NULL;
 	}
+	stbds_arrput(ctx->sprites, texture);
 	return texture;
 }
