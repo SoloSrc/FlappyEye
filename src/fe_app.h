@@ -8,6 +8,7 @@
 #include <stdbool.h>
 
 #include <SDL3/SDL.h>
+#include <zip.h>
 
 #ifndef FE_APP_H
 #define FE_APP_H
@@ -15,10 +16,11 @@
 typedef struct A_Context {
 	SDL_Window* window;
 	SDL_Renderer* renderer;
+	zip_t* assets;
 } A_Context;
 
 
-bool A_Init(A_Context*);
+bool A_Init(A_Context*, const char*);
 void A_Quit(A_Context*);
 void A_Run(A_Context*);
 

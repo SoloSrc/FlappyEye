@@ -25,19 +25,52 @@ static bool a_createWindow(A_Context* ctx)
 	return true;
 }
 
-bool A_Init(A_Context* ctx)
+static bool a_initAssets(A_Context* ctx, const char* filepath)
 {
+	int err;
+	zip_t* za;
+	if ((za = zip_open(filepath, ZIP_RDONLY, &err)) == NULL) {
+		zip_error_t error;
+		zip_error_init_with_code(&error, err);
+		SDL_LogError(
+			SDL_LOG_CATEGORY_APPLICATION,
+			"unzip %s: %s",
+			filepath,
+			zip_error_strerror(&error)
+		);
+		zip_error_fini(&error);
+		return false;
+	}
+	ctx->assets = za;
+	return true;
+}
+
+bool A_Init(A_Context* ctx, const char* filepath)
+{
+	// clean ups
+	ctx->assets = NULL;
+	ctx->window = NULL;
+	ctx->renderer = NULL;
+
+	// inits
 	if (!a_initSDL()) {
+		return false;
+	}
+	if (!a_initAssets(ctx, filepath)) {
 		return false;
 	}
 	if (!a_createWindow(ctx)) {
 		return false;
 	}
+
 	return true;
 }
 
 void A_Quit(A_Context* ctx)
 {
+	if (ctx->assets != NULL) {
+		zip_close(ctx->assets);
+	}
 	SDL_DestroyRenderer(ctx->renderer);
 	ctx->renderer = NULL;
 	SDL_DestroyWindow(ctx->window);

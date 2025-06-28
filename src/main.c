@@ -12,7 +12,7 @@ static void quit(void)
 int main()
 {
 	atexit(quit);
-	if (!A_Init(&ctx)) {
+	if (!A_Init(&ctx, "assets.hfd")) {
 		exit(EXIT_FAILURE);
 	}
 	A_Run(&ctx);
