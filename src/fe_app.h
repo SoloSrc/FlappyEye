@@ -10,7 +10,10 @@
 #ifndef FE_APP_H
 #define FE_APP_H
 
-bool A_Init(void);
-void A_Quit(void);
+typedef struct A_Context A_Context;
+
+bool A_Init(A_Context**);
+void A_Quit(A_Context*);
+void A_Run(A_Context*);
 
 #endif // FE_APP_H

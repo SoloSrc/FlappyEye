@@ -2,12 +2,19 @@
 
 #include "fe_app.h"
 
+A_Context* ctx;
+
+static void quit(void)
+{
+	A_Quit(ctx);
+}
+
 int main()
 {
-	atexit(A_Quit);
-	if (!A_Init()) {
+	atexit(quit);
+	if (!A_Init(&ctx)) {
 		exit(EXIT_FAILURE);
 	}
-	printf("Hello, World\n");
+	A_Run(ctx);
 	return 0;
 }
