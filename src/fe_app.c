@@ -102,6 +102,11 @@ void A_Run(A_Context* ctx)
 
 		SDL_SetRenderDrawColor(ctx->renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(ctx->renderer);
+
+		SDL_FRect dst = { .x = 100, .y = 100, .w = 150, .h = 150 };
+		SDL_FRect src = { .x = 0, .y = 0, .w = 150, .h = 150 };
+		SDL_RenderTexture(ctx->renderer, ctx->sprites[0], &src, &dst);
+
 		SDL_RenderPresent(ctx->renderer);
 	}
 }
