@@ -19,6 +19,8 @@ typedef struct A_Sprite {
 	SDL_Texture* texture;
 	float width;
 	float height;
+	int frames; // Number of frames in the sprite sheet
+	int cols; // Number of columns in the sprite sheet
 } A_Sprite;
 
 typedef struct A_Context {
@@ -33,5 +35,6 @@ void A_Quit(A_Context*);
 void A_Run(A_Context*);
 
 A_Sprite* A_LoadSprite(A_Context*, const char*);
+A_Sprite* A_LoadSpriteSheet(A_Context* ctx, const char* path, int rows, int cols);
 
 #endif // FE_APP_H

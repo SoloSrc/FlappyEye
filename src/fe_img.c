@@ -142,7 +142,31 @@ A_Sprite* A_LoadSprite(A_Context* ctx, const char* path)
 		return NULL;
 	}
 	sprite->texture = texture;
+	sprite->frames = 1; // Default to 1 frame in this function
 	SDL_GetTextureSize(texture, &sprite->width, &sprite->height);
 	stbds_arrput(ctx->sprites, sprite);
+	return sprite;
+}
+
+A_Sprite* A_LoadSpriteSheet(A_Context* ctx, const char* path, int rows, int cols)
+{
+	A_Sprite* sprite = A_LoadSprite(ctx, path);
+	if (sprite == NULL) {
+		return NULL;
+	}
+	sprite->frames = rows * cols;
+	if (sprite->frames <= 0) {
+		SDL_LogError(
+			SDL_LOG_CATEGORY_APPLICATION,
+			"Invalid sprite sheet dimensions (%d rows, %d cols) for asset %s",
+			rows, cols, path
+		);
+		SDL_DestroyTexture(sprite->texture);
+		free(sprite);
+		return NULL;
+	}
+	sprite->width /= cols; // Calculate width of each frame
+	sprite->height /= rows; // Calculate height of each frame
+	sprite->cols = cols; // Store the number of columns
 	return sprite;
 }
