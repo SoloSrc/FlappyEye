@@ -23,11 +23,16 @@ typedef struct A_Sprite {
 	int cols; // Number of columns in the sprite sheet
 } A_Sprite;
 
+typedef struct A_SpriteKV {
+	char* key; // Path to the sprite asset
+	A_Sprite* value; // Pointer to the loaded sprite
+} A_SpriteKV;
+
 typedef struct A_Context {
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	zip_t* assets;
-	A_Sprite** sprites; // Array of loaded sprites, managed by stb_ds
+	A_SpriteKV* sprites; // HashMap of loaded sprites, managed by stb_ds
 } A_Context;
 
 bool A_Init(A_Context*, const char*);

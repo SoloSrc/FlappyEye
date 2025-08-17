@@ -73,17 +73,17 @@ bool A_Init(A_Context* ctx, const char* filepath)
 void A_Quit(A_Context* ctx)
 {
 	if (ctx->sprites != NULL) {
-		for (int i = 0; i < stbds_arrlen(ctx->sprites); i++) {
-			if (ctx->sprites[i] != NULL) {
-				SDL_DestroyTexture(ctx->sprites[i]->texture);
-				free(ctx->sprites[i]);
+		for (int i = 0; i < stbds_shlen(ctx->sprites); i++) {
+			if (ctx->sprites[i].value != NULL) {
+				SDL_DestroyTexture(ctx->sprites[i].value->texture);
 			}
 		}
-		stbds_arrfree(ctx->sprites);
+		stbds_shfree(ctx->sprites);
 		ctx->sprites = NULL;
 	}
 	if (ctx->assets != NULL) {
 		zip_close(ctx->assets);
+		ctx->assets = NULL;
 	}
 	SDL_DestroyRenderer(ctx->renderer);
 	ctx->renderer = NULL;
@@ -104,7 +104,7 @@ void A_Run(A_Context* ctx)
 		SDL_SetRenderDrawColor(ctx->renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(ctx->renderer);
 
-		A_Sprite* sprite = ctx->sprites[0];
+		A_Sprite* sprite = ctx->sprites[0].value;
 		SDL_FRect dst = { .x = 100, .y = 100, .w = sprite->width, .h = sprite->height };
 		SDL_FRect src = { .x = 0, .y = 0, .w = sprite->width, .h = sprite->height };
 		SDL_RenderTexture(ctx->renderer, sprite->texture, &src, &dst);

@@ -144,7 +144,7 @@ A_Sprite* A_LoadSprite(A_Context* ctx, const char* path)
 	sprite->texture = texture;
 	sprite->frames = 1; // Default to 1 frame in this function
 	SDL_GetTextureSize(texture, &sprite->width, &sprite->height);
-	stbds_arrput(ctx->sprites, sprite);
+	stbds_shput(ctx->sprites, path, sprite);
 	return sprite;
 }
 
