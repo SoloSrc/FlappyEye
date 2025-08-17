@@ -66,7 +66,7 @@ static bool a_copyBytesToStream(A_Context* ctx, SDL_IOStream* io, a_assetStat* s
 	return true;
 }
 
-A_Sprite A_LoadSprite(A_Context* ctx, const char* path)
+A_Sprite* A_LoadSprite(A_Context* ctx, const char* path)
 {
 	// load file statistics
 	a_assetStat stat;
@@ -131,6 +131,18 @@ A_Sprite A_LoadSprite(A_Context* ctx, const char* path)
 		);
 		return NULL;
 	}
-	stbds_arrput(ctx->sprites, texture);
-	return texture;
+	A_Sprite* sprite = malloc(sizeof(A_Sprite));
+	if (sprite == NULL) {
+		SDL_LogError(
+			SDL_LOG_CATEGORY_APPLICATION,
+			"Cannot allocate memory for sprite: %s",
+			path
+		);
+		SDL_DestroyTexture(texture);
+		return NULL;
+	}
+	sprite->texture = texture;
+	SDL_GetTextureSize(texture, &sprite->width, &sprite->height);
+	stbds_arrput(ctx->sprites, sprite);
+	return sprite;
 }

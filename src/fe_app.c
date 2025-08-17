@@ -75,7 +75,8 @@ void A_Quit(A_Context* ctx)
 	if (ctx->sprites != NULL) {
 		for (int i = 0; i < stbds_arrlen(ctx->sprites); i++) {
 			if (ctx->sprites[i] != NULL) {
-				SDL_DestroyTexture(ctx->sprites[i]);
+				SDL_DestroyTexture(ctx->sprites[i]->texture);
+				free(ctx->sprites[i]);
 			}
 		}
 		stbds_arrfree(ctx->sprites);
@@ -103,9 +104,10 @@ void A_Run(A_Context* ctx)
 		SDL_SetRenderDrawColor(ctx->renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(ctx->renderer);
 
-		SDL_FRect dst = { .x = 100, .y = 100, .w = 150, .h = 150 };
-		SDL_FRect src = { .x = 0, .y = 0, .w = 150, .h = 150 };
-		SDL_RenderTexture(ctx->renderer, ctx->sprites[0], &src, &dst);
+		A_Sprite* sprite = ctx->sprites[0];
+		SDL_FRect dst = { .x = 100, .y = 100, .w = sprite->width, .h = sprite->height };
+		SDL_FRect src = { .x = 0, .y = 0, .w = sprite->width, .h = sprite->height };
+		SDL_RenderTexture(ctx->renderer, sprite->texture, &src, &dst);
 
 		SDL_RenderPresent(ctx->renderer);
 	}
