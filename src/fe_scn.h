@@ -19,6 +19,7 @@ typedef struct D_SpriteComponent {
 
 typedef union D_Component {
 	D_ComponentType type; // Type of the component, a field shared in all components
+	D_SpriteComponent sprite; // Sprite component
 } D_Component;
 
 typedef struct D_Node {
@@ -27,13 +28,9 @@ typedef struct D_Node {
 	D_Component* components; // Array of components, managed by stb_ds
 } D_Node;
 
-typedef struct D_Scene {
-	D_Node* root; // The root node of the scene
-} D_Scene;
-
-void D_InitScene(D_Scene* scene);
-void D_FreeScene(D_Scene** scene);
-void D_InitNode(D_Node* node);
+D_Node* D_InitNode(void);
 void D_FreeNode(D_Node** node);
+
+void D_AddSpriteComponent(D_Node* node, char* path);
 
 #endif // FE_SCN_H
