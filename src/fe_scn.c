@@ -4,8 +4,6 @@
 
 #include "stb_ds.h"
 
-
-
 static void d_removeFromParent(D_Node* parent, D_Node* node)
 {
 	if (node == NULL || parent == NULL) {
@@ -53,6 +51,16 @@ void D_FreeNode(D_Node** node)
 	d_freeNodeRecursive(*node);
 	d_removeFromParent(parent, *node);
 	*node = NULL;
+}
+
+void D_AddPositionComponent(D_Node* node, float x, float y)
+{
+	if (node == NULL) {
+		return;
+	}
+	D_PositionComponent cmp = { .type = S_COMPONENT_TYPE_POSITION, .x = x, .y = y };
+	D_Component unionCmp = { .position = cmp };
+	stbds_arrput(node->components, unionCmp);
 }
 
 void D_AddSpriteComponent(D_Node* node, char* path)

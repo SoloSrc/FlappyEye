@@ -10,6 +10,8 @@
 #include <SDL3/SDL.h>
 #include <zip.h>
 
+#include "fe_scn.h"
+
 #ifndef FE_APP_H
 #define FE_APP_H
 
@@ -37,7 +39,7 @@ typedef struct A_Context {
 
 bool A_Init(A_Context*, const char*);
 void A_Quit(A_Context*);
-void A_Run(A_Context*);
+void A_Run(A_Context*, D_Node *node);
 
 A_Sprite* A_LoadSprite(A_Context*, const char*);
 A_Sprite* A_LoadSpriteSheet(A_Context* ctx, const char* path, int rows, int cols);

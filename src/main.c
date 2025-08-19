@@ -20,8 +20,9 @@ int main()
 	
 	D_Node* root = D_InitNode();
 	D_AddSpriteComponent(root, "sprites/flappy.png");
+	D_AddPositionComponent(root, -50.0f, -50.0f);
 
-	A_Run(&ctx);
+	A_Run(&ctx, root);
 
 	D_FreeNode(&root);
 

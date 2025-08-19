@@ -2,6 +2,7 @@
 #include "stb_ds.h"
 
 #include "fe_app.h"
+#include "fe_sys.h"
 
 static bool a_initSDL(void)
 {
@@ -92,7 +93,7 @@ void A_Quit(A_Context* ctx)
 	SDL_Quit();
 }
 
-void A_Run(A_Context* ctx)
+void A_Run(A_Context* ctx, D_Node* node)
 {
 	SDL_Event event;
 	while (1) {
@@ -104,10 +105,7 @@ void A_Run(A_Context* ctx)
 		SDL_SetRenderDrawColor(ctx->renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(ctx->renderer);
 
-		A_Sprite* sprite = ctx->sprites[0].value;
-		SDL_FRect dst = { .x = 100, .y = 100, .w = sprite->width, .h = sprite->height };
-		SDL_FRect src = { .x = 0, .y = 0, .w = sprite->width, .h = sprite->height };
-		SDL_RenderTexture(ctx->renderer, sprite->texture, &src, &dst);
+		S_RenderSprites(ctx, node);
 
 		SDL_RenderPresent(ctx->renderer);
 	}

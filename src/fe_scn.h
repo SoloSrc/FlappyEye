@@ -9,8 +9,15 @@
 typedef enum D_ComponentType {
 	S_COMPONENT_TYPE_UNKNOWN = 0,
 	// Add more component types as needed
+	S_COMPONENT_TYPE_POSITION,
 	S_COMPONENT_TYPE_SPRITE,
 } D_ComponentType;
+
+typedef struct D_PositionComponent {
+	D_ComponentType type; // Type of the component, a field shared in all components
+	float x; // X-coordinate of the position
+	float y; // Y-coordinate of the position
+} D_PositionComponent;
 
 typedef struct D_SpriteComponent {
 	D_ComponentType type; // Type of the component, a field shared in all components
@@ -20,6 +27,7 @@ typedef struct D_SpriteComponent {
 typedef union D_Component {
 	D_ComponentType type; // Type of the component, a field shared in all components
 	D_SpriteComponent sprite; // Sprite component
+	D_PositionComponent position; // Position component
 } D_Component;
 
 typedef struct D_Node {
@@ -31,6 +39,7 @@ typedef struct D_Node {
 D_Node* D_InitNode(void);
 void D_FreeNode(D_Node** node);
 
+void D_AddPositionComponent(D_Node* node, float x, float y);
 void D_AddSpriteComponent(D_Node* node, char* path);
 
 #endif // FE_SCN_H
