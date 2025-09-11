@@ -19,9 +19,17 @@ typedef struct D_PositionComponent {
 	float y; // Y-coordinate of the position
 } D_PositionComponent;
 
+typedef struct D_Sprite {
+	void* texture;
+	float width;
+	float height;
+	int frames; // Number of frames in the sprite sheet
+	int cols; // Number of columns in the sprite sheet
+} D_Sprite;
+
 typedef struct D_SpriteComponent {
 	D_ComponentType type; // Type of the component, a field shared in all components
-	char* path; // Path to the texture file for the sprite, used as key for Sprite-lookup
+	D_Sprite* sprite; // Pointer to the sprite itself with its data
 } D_SpriteComponent;
 
 typedef union D_Component {
@@ -31,15 +39,16 @@ typedef union D_Component {
 } D_Component;
 
 typedef struct D_Node {
+	char* name;
 	struct D_Node* parent; // Pointer to the parent node
 	struct D_Node** children; // Array of child nodes, managed by stb_ds
 	D_Component* components; // Array of components, managed by stb_ds
 } D_Node;
 
-D_Node* D_InitNode(void);
+D_Node* D_InitNode(const char* name);
 void D_FreeNode(D_Node** node);
 
 void D_AddPositionComponent(D_Node* node, float x, float y);
-void D_AddSpriteComponent(D_Node* node, char* path);
+void D_AddSpriteComponent(D_Node* node, D_Sprite* sprite);
 
 #endif // FE_SCN_H

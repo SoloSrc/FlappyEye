@@ -66,7 +66,7 @@ static bool a_copyBytesToStream(A_Context* ctx, SDL_IOStream* io, a_assetStat* s
 	return true;
 }
 
-A_Sprite* A_LoadSprite(A_Context* ctx, const char* path)
+D_Sprite* A_LoadSprite(A_Context* ctx, const char* path)
 {
 	// load file statistics
 	a_assetStat stat;
@@ -131,7 +131,7 @@ A_Sprite* A_LoadSprite(A_Context* ctx, const char* path)
 		);
 		return NULL;
 	}
-	A_Sprite* sprite = malloc(sizeof(A_Sprite));
+	D_Sprite* sprite = malloc(sizeof(D_Sprite));
 	if (sprite == NULL) {
 		SDL_LogError(
 			SDL_LOG_CATEGORY_APPLICATION,
@@ -148,9 +148,9 @@ A_Sprite* A_LoadSprite(A_Context* ctx, const char* path)
 	return sprite;
 }
 
-A_Sprite* A_LoadSpriteSheet(A_Context* ctx, const char* path, int rows, int cols)
+D_Sprite* A_LoadSpriteSheet(A_Context* ctx, const char* path, int rows, int cols)
 {
-	A_Sprite* sprite = A_LoadSprite(ctx, path);
+	D_Sprite* sprite = A_LoadSprite(ctx, path);
 	if (sprite == NULL) {
 		return NULL;
 	}

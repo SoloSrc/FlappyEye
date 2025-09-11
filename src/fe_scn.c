@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "fe_scn.h"
 
@@ -30,12 +31,15 @@ static void d_freeNodeRecursive(D_Node* node)
 	free(node);
 }
 
-D_Node* D_InitNode(void)
+D_Node* D_InitNode(const char* name)
 {
 	D_Node* node = malloc(sizeof(D_Node));
 	if (node == NULL) {
 		return NULL;
 	}
+	size_t nameLen = strlen(name) + 1 /* NULL char */;
+	node->name = malloc(sizeof(char) * nameLen);
+	strncpy(node->name, name, nameLen);
 	node->parent = NULL;
 	node->children = NULL;
 	node->components = NULL;
@@ -63,12 +67,12 @@ void D_AddPositionComponent(D_Node* node, float x, float y)
 	stbds_arrput(node->components, unionCmp);
 }
 
-void D_AddSpriteComponent(D_Node* node, char* path)
+void D_AddSpriteComponent(D_Node* node, D_Sprite* sprite)
 {
-	if (node == NULL || path == NULL) {
+	if (node == NULL || sprite == NULL) {
 		return;
 	}
-	D_SpriteComponent cmp = { .type = S_COMPONENT_TYPE_SPRITE, .path = path};
+	D_SpriteComponent cmp = { .type = S_COMPONENT_TYPE_SPRITE, .sprite = sprite};
 	D_Component unionCmp = { .sprite = cmp };
 	stbds_arrput(node->components, unionCmp);
 }

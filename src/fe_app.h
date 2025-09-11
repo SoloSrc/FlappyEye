@@ -17,17 +17,9 @@
 
 #define STBDS_NO_SHORT_NAMES
 
-typedef struct A_Sprite {
-	SDL_Texture* texture;
-	float width;
-	float height;
-	int frames; // Number of frames in the sprite sheet
-	int cols; // Number of columns in the sprite sheet
-} A_Sprite;
-
 typedef struct A_SpriteKV {
 	char* key; // Path to the sprite asset
-	A_Sprite* value; // Pointer to the loaded sprite
+	D_Sprite* value; // Pointer to the loaded sprite
 } A_SpriteKV;
 
 typedef struct A_Context {
@@ -41,7 +33,7 @@ bool A_Init(A_Context*, const char*);
 void A_Quit(A_Context*);
 void A_Run(A_Context*, D_Node *node);
 
-A_Sprite* A_LoadSprite(A_Context*, const char*);
-A_Sprite* A_LoadSpriteSheet(A_Context* ctx, const char* path, int rows, int cols);
+D_Sprite* A_LoadSprite(A_Context*, const char*);
+D_Sprite* A_LoadSpriteSheet(A_Context* ctx, const char* path, int rows, int cols);
 
 #endif // FE_APP_H

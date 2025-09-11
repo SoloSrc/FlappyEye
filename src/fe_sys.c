@@ -12,22 +12,22 @@ void S_RenderSprites(A_Context* ctx, D_Node* node)
 		D_Node* child = node->children[i];
 		S_RenderSprites(ctx, child);
 	}
-	A_Sprite* nodeSprite = NULL;
+	D_Sprite* nodeSprite = NULL;
 	SDL_FPoint position = { 0.0f, 0.0f };
 	for (int i = 0; i < stbds_arrlen(node->components); i++) {
 		D_Component* cmp = &node->components[i];
 
 		if (cmp->type == S_COMPONENT_TYPE_SPRITE) {
 			D_SpriteComponent* spriteCmp = &cmp->sprite;
-			A_Sprite* sprite = stbds_shget(ctx->sprites, spriteCmp->path);
+			D_Sprite* sprite = spriteCmp->sprite;
 			if (sprite != NULL && sprite->texture != NULL) {
 				nodeSprite = sprite;
 			}
 			else {
 				SDL_LogError(
 					SDL_LOG_CATEGORY_APPLICATION,
-					"Sprite not found or texture is NULL for path: %s",
-					spriteCmp->path
+					"Sprite not found or texture is NULL for Node: %s",
+					node->name
 				);
 			}
 		}
@@ -50,5 +50,5 @@ void S_RenderSprites(A_Context* ctx, D_Node* node)
 		.w = nodeSprite->width,
 		.h = nodeSprite->height
 	};
-	SDL_RenderTexture(ctx->renderer, nodeSprite->texture, &src, &dst);
+	SDL_RenderTexture(ctx->renderer, (SDL_Texture*)nodeSprite->texture, &src, &dst);
 }
