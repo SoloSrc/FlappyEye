@@ -9,11 +9,11 @@
 #define FE_SCN_H
 
 typedef enum D_ComponentType {
-	S_COMPONENT_TYPE_UNKNOWN = 0,
+	D_COMPONENT_TYPE_UNKNOWN = 0,
 	// Add more component types as needed
-	S_COMPONENT_TYPE_POSITION,
-	S_COMPONENT_TYPE_SPRITE,
-	S_COMPONENT_TYPE_CAMERA,
+	D_COMPONENT_TYPE_POSITION,
+	D_COMPONENT_TYPE_SPRITE,
+	D_COMPONENT_TYPE_CAMERA,
 } D_ComponentType;
 
 typedef struct D_PositionComponent {

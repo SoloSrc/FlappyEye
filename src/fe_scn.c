@@ -67,7 +67,7 @@ bool D_ValidateScene(D_Scene *scene)
 	D_CameraComponent* cameraCmp = NULL;
 	for (int i = 0; i < stbds_arrlen(camera->components); i++) {
 		D_Component* cmp = &camera->components[i];
-		if (cmp->type == S_COMPONENT_TYPE_CAMERA) {
+		if (cmp->type == D_COMPONENT_TYPE_CAMERA) {
 			cameraCmp = &cmp->camera;
 			break;
 		}
@@ -106,7 +106,7 @@ D_Node *D_InitCameraNode(const char *name)
 {
 	D_Node* camera = D_InitNode(name);
 	D_AddPositionComponent(camera, 0, 0);
-	D_CameraComponent cameraCmp = { .type = S_COMPONENT_TYPE_CAMERA, };
+	D_CameraComponent cameraCmp = { .type = D_COMPONENT_TYPE_CAMERA, };
 	D_Component unionCmp = { .camera = cameraCmp };
 	stbds_arrput(camera->components, unionCmp);
 	return camera;
@@ -128,7 +128,7 @@ void D_AddPositionComponent(D_Node* node, float x, float y)
 	if (node == NULL) {
 		return;
 	}
-	D_PositionComponent cmp = { .type = S_COMPONENT_TYPE_POSITION, .x = x, .y = y };
+	D_PositionComponent cmp = { .type = D_COMPONENT_TYPE_POSITION, .x = x, .y = y };
 	D_Component unionCmp = { .position = cmp };
 	stbds_arrput(node->components, unionCmp);
 }
@@ -138,7 +138,7 @@ void D_AddSpriteComponent(D_Node* node, D_Sprite* sprite)
 	if (node == NULL || sprite == NULL) {
 		return;
 	}
-	D_SpriteComponent cmp = { .type = S_COMPONENT_TYPE_SPRITE, .sprite = sprite};
+	D_SpriteComponent cmp = { .type = D_COMPONENT_TYPE_SPRITE, .sprite = sprite};
 	D_Component unionCmp = { .sprite = cmp };
 	stbds_arrput(node->components, unionCmp);
 }

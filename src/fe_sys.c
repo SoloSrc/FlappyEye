@@ -14,7 +14,7 @@ static void S_renderSprites(A_Context* ctx, D_Scene* scene, D_Node* node)
 	for (int i = 0; i < stbds_arrlen(node->components); i++) {
 		D_Component* cmp = &node->components[i];
 
-		if (cmp->type == S_COMPONENT_TYPE_SPRITE) {
+		if (cmp->type == D_COMPONENT_TYPE_SPRITE) {
 			D_SpriteComponent* spriteCmp = &cmp->sprite;
 			D_Sprite* sprite = spriteCmp->sprite;
 			if (sprite != NULL && sprite->texture != NULL) {
@@ -29,7 +29,7 @@ static void S_renderSprites(A_Context* ctx, D_Scene* scene, D_Node* node)
 			}
 		}
 		
-		if (cmp->type == S_COMPONENT_TYPE_POSITION) {
+		if (cmp->type == D_COMPONENT_TYPE_POSITION) {
 			D_PositionComponent* posCmp = &cmp->position;
 			position.x = posCmp->x;
 			position.y = posCmp->y;
