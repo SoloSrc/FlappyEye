@@ -18,13 +18,18 @@ int main()
 	}
 	D_Sprite* sprite = A_LoadSpriteSheet(&ctx, "sprites/flappy.png", 1, 8);
 	
-	D_Node* root = D_InitNode("flappy");
-	D_AddSpriteComponent(root, sprite);
-	D_AddPositionComponent(root, -50.0f, -50.0f);
+	D_Node* flappy = D_InitNode("flappy");
+	D_AddPositionComponent(flappy, -50.0f, -50.0f);
+	
+	D_Node* spriteNode = D_InitNode("sprite");
+	D_AddPositionComponent(spriteNode, -80, 85);
+	D_AddSpriteComponent(spriteNode, sprite);
 
-	D_Node *camera = D_InitCameraNode("camear");
+	D_AttachChildNode(flappy, spriteNode);
 
-	D_Scene* scene = D_InitScene(root, camera);
+	D_Node *camera = D_InitCameraNode("camera");
+
+	D_Scene* scene = D_InitScene(flappy, camera);
 
 	A_Run(&ctx, scene);
 

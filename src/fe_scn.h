@@ -64,6 +64,7 @@ void D_FreeScene(D_Scene** scene);
 
 D_Node* D_InitNode(const char* name);
 D_Node* D_InitCameraNode(const char* name);
+void D_AttachChildNode(D_Node* parent, D_Node* child);
 void D_FreeNode(D_Node** node);
 
 void D_AddPositionComponent(D_Node* node, float x, float y);

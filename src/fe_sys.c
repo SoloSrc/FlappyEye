@@ -3,14 +3,46 @@
 #include "fe_app.h"
 #include "stb_ds.h"
 
-static void S_renderSprites(A_Context* ctx, D_Scene* scene, D_Node* node)
+static SDL_FPoint s_calculateWorldPosition(SDL_FPoint base, SDL_FPoint offset)
 {
-	for (int i = 0; i < stbds_arrlen(node->children); i++) {
-		D_Node* child = node->children[i];
-		S_renderSprites(ctx, scene, child);
+	SDL_FPoint res = {
+		.x = base.x + offset.x,
+		.y = base.y + offset.y
+	};
+	return res;
+}
+
+static SDL_FPoint s_calculateScreenPosition(A_Context* ctx, D_Node* camera, SDL_FPoint worldPos)
+{
+	SDL_FPoint cameraPos = { .x = 0.0f, .y = 0.0f };
+	for (int i = 0; i < stbds_arrlen(camera->components); i++) {
+		D_Component* cmp = &camera->components[i];
+		if (cmp->type == D_COMPONENT_TYPE_POSITION) {
+			D_PositionComponent* posCmp = &cmp->position;
+			cameraPos.x = posCmp->x;
+			cameraPos.y = posCmp->y;
+			break;
+		}
 	}
+	SDL_Point screenDim;
+	SDL_GetRenderOutputSize(ctx->renderer, &screenDim.x, &screenDim.y);
+
+	SDL_FPoint topLeftPos;
+	topLeftPos.x = cameraPos.x - (screenDim.x / 2.0f);
+	topLeftPos.y = cameraPos.y + (screenDim.y / 2.0f);
+	SDL_FPoint screenPos;
+	screenPos.x =  worldPos.x - cameraPos.x - topLeftPos.x;
+	// in screen position, y is inverted
+	screenPos.y = -(worldPos.y - cameraPos.y - topLeftPos.y);
+
+	return screenPos;
+}
+
+static void s_renderSprites(A_Context* ctx, D_Scene* scene, D_Node* node, SDL_FPoint parentPos)
+{
 	D_Sprite* nodeSprite = NULL;
-	SDL_FPoint position = { 0.0f, 0.0f };
+	SDL_FPoint localPos = { 0.0f, 0.0f };
+	bool hasPos = false;
 	for (int i = 0; i < stbds_arrlen(node->components); i++) {
 		D_Component* cmp = &node->components[i];
 
@@ -31,13 +63,32 @@ static void S_renderSprites(A_Context* ctx, D_Scene* scene, D_Node* node)
 		
 		if (cmp->type == D_COMPONENT_TYPE_POSITION) {
 			D_PositionComponent* posCmp = &cmp->position;
-			position.x = posCmp->x;
-			position.y = posCmp->y;
+			localPos.x = posCmp->x;
+			localPos.y = posCmp->y;
+			hasPos = true;
 		}
 	}
+	if (!hasPos) {
+		return;
+	}
+	SDL_FPoint worldPos = s_calculateWorldPosition(parentPos, localPos);
+
+	for (int i = 0; i < stbds_arrlen(node->children); i++) {
+		D_Node* child = node->children[i];
+		s_renderSprites(ctx, scene, child, worldPos);
+	}
+
+	if (nodeSprite == NULL) {
+		return;
+	}
+
+	SDL_FPoint screenPos = s_calculateScreenPosition(ctx, scene->camera, worldPos);
+	SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "%s x: %f, y: %f", node->name, screenPos.x, screenPos.y);
+
+	// Render sprite
 	SDL_FRect dst = {
-		.x = position.x,
-		.y = position.y,
+		.x = screenPos.x,
+		.y = screenPos.y,
 		.w = nodeSprite->width,
 		.h = nodeSprite->height
 	};
@@ -58,5 +109,6 @@ void S_RenderScene(A_Context* ctx, D_Scene* scene)
 	if (scene == NULL || scene->root == NULL) {
 		return;
 	}
-	S_renderSprites(ctx, scene, scene->root);
+	SDL_FPoint root = { .x = 0.0f, .y = 0.0f };
+	s_renderSprites(ctx, scene, scene->root, root);
 }

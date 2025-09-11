@@ -112,6 +112,14 @@ D_Node *D_InitCameraNode(const char *name)
 	return camera;
 }
 
+void D_AttachChildNode(D_Node *parent, D_Node *child)
+{
+	if (parent == NULL || child == NULL) {
+		return;
+	}
+	stbds_arrput(parent->children, child);
+}
+
 void D_FreeNode(D_Node** node)
 {
 	if (node == NULL || *node == NULL) {
