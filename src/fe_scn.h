@@ -45,6 +45,13 @@ typedef struct D_Node {
 	D_Component* components; // Array of components, managed by stb_ds
 } D_Node;
 
+typedef struct D_Scene {
+	D_Node* root; // Pointer to the root Node of this scene
+} D_Scene;
+
+D_Scene* D_InitScene(D_Node *root);
+void D_FreeScene(D_Scene** scene);
+
 D_Node* D_InitNode(const char* name);
 void D_FreeNode(D_Node** node);
 

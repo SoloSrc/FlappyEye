@@ -3,14 +3,11 @@
 #include "fe_app.h"
 #include "stb_ds.h"
 
-void S_RenderSprites(A_Context* ctx, D_Node* node)
+static void S_renderSprites(A_Context* ctx, D_Scene* scene, D_Node* node)
 {
-	if (node == NULL || ctx == NULL || ctx->renderer == NULL) {
-		return;
-	}
 	for (int i = 0; i < stbds_arrlen(node->children); i++) {
 		D_Node* child = node->children[i];
-		S_RenderSprites(ctx, child);
+		S_renderSprites(ctx, scene, child);
 	}
 	D_Sprite* nodeSprite = NULL;
 	SDL_FPoint position = { 0.0f, 0.0f };
@@ -51,4 +48,15 @@ void S_RenderSprites(A_Context* ctx, D_Node* node)
 		.h = nodeSprite->height
 	};
 	SDL_RenderTexture(ctx->renderer, (SDL_Texture*)nodeSprite->texture, &src, &dst);
+}
+
+void S_RenderScene(A_Context* ctx, D_Scene* scene)
+{
+	if (ctx == NULL || ctx->renderer == NULL) {
+		return;
+	}
+	if (scene == NULL || scene->root == NULL) {
+		return;
+	}
+	S_renderSprites(ctx, scene, scene->root);
 }

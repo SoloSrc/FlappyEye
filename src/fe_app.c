@@ -93,7 +93,7 @@ void A_Quit(A_Context* ctx)
 	SDL_Quit();
 }
 
-void A_Run(A_Context* ctx, D_Node* node)
+void A_Run(A_Context* ctx, D_Scene* scene)
 {
 	SDL_Event event;
 	while (1) {
@@ -105,7 +105,7 @@ void A_Run(A_Context* ctx, D_Node* node)
 		SDL_SetRenderDrawColor(ctx->renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(ctx->renderer);
 
-		S_RenderSprites(ctx, node);
+		S_RenderScene(ctx, scene);
 
 		SDL_RenderPresent(ctx->renderer);
 	}

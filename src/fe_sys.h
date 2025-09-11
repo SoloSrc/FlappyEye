@@ -6,6 +6,6 @@
 #ifndef FE_SYS_H
 #define FE_SYS_H
 
-void S_RenderSprites(A_Context* ctx, D_Node* node);
+void S_RenderScene(A_Context* ctx, D_Scene* scene);
 
 #endif // !FE_SYS_H

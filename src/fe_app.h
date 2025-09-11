@@ -31,7 +31,7 @@ typedef struct A_Context {
 
 bool A_Init(A_Context*, const char*);
 void A_Quit(A_Context*);
-void A_Run(A_Context*, D_Node *node);
+void A_Run(A_Context*, D_Scene *scene);
 
 D_Sprite* A_LoadSprite(A_Context*, const char*);
 D_Sprite* A_LoadSpriteSheet(A_Context* ctx, const char* path, int rows, int cols);

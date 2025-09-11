@@ -31,7 +31,35 @@ static void d_freeNodeRecursive(D_Node* node)
 	free(node);
 }
 
-D_Node* D_InitNode(const char* name)
+static void d_freeScene(D_Scene* scene)
+{
+	if (scene == NULL) {
+		return;
+	}
+	D_FreeNode(&(scene->root));
+	free(scene);
+}
+
+D_Scene *D_InitScene(D_Node *root)
+{
+	D_Scene* scene = malloc(sizeof(D_Scene));
+	if (scene == NULL) {
+		return NULL;
+	}
+	scene->root = root;
+	return scene;
+}
+
+void D_FreeScene(D_Scene **scene)
+{
+	if (scene == NULL) {
+		return;
+	}
+	d_freeScene(*scene);
+	*scene = NULL;
+}
+
+D_Node *D_InitNode(const char *name)
 {
 	D_Node* node = malloc(sizeof(D_Node));
 	if (node == NULL) {
