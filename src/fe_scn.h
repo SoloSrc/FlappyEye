@@ -3,6 +3,8 @@
 // Header file for anything that is Scene related. For example,
 // creating a Node, setting it as a Scene root, etc.
 
+#include <stdbool.h>
+
 #ifndef FE_SCN_H
 #define FE_SCN_H
 
@@ -56,7 +58,8 @@ typedef struct D_Scene {
 	D_Node* camera; // Pointer to a special Node that represents the camera
 } D_Scene;
 
-D_Scene* D_InitScene(D_Node *root);
+D_Scene* D_InitScene(D_Node *root, D_Node* camear);
+bool D_ValidateScene(D_Scene *scene);
 void D_FreeScene(D_Scene** scene);
 
 D_Node* D_InitNode(const char* name);

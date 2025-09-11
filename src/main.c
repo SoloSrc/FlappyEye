@@ -22,7 +22,9 @@ int main()
 	D_AddSpriteComponent(root, sprite);
 	D_AddPositionComponent(root, -50.0f, -50.0f);
 
-	D_Scene* scene = D_InitScene(root);
+	D_Node *camera = D_InitCameraNode("camear");
+
+	D_Scene* scene = D_InitScene(root, camera);
 
 	A_Run(&ctx, scene);
 

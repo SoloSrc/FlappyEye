@@ -95,6 +95,13 @@ void A_Quit(A_Context* ctx)
 
 void A_Run(A_Context* ctx, D_Scene* scene)
 {
+	if (!D_ValidateScene(scene)) {
+		SDL_LogError(
+			SDL_LOG_CATEGORY_APPLICATION,
+			"Provided invalid scene to A_Run"
+		);
+		return;
+	}
 	SDL_Event event;
 	while (1) {
 		SDL_PollEvent(&event);

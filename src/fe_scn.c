@@ -37,17 +37,45 @@ static void d_freeScene(D_Scene* scene)
 		return;
 	}
 	D_FreeNode(&(scene->root));
+	D_FreeNode(&(scene->camera));
 	free(scene);
 }
 
-D_Scene *D_InitScene(D_Node *root)
+D_Scene *D_InitScene(D_Node *root, D_Node* camera)
 {
 	D_Scene* scene = malloc(sizeof(D_Scene));
 	if (scene == NULL) {
 		return NULL;
 	}
 	scene->root = root;
+	scene->camera = camera;
 	return scene;
+}
+
+bool D_ValidateScene(D_Scene *scene)
+{
+	if (scene == NULL) {
+		return false;
+	}
+	if (scene->root == NULL) {
+		return false;
+	}
+	if (scene->camera == NULL) {
+		return false;
+	}
+	D_Node* camera = scene->camera;
+	D_CameraComponent* cameraCmp = NULL;
+	for (int i = 0; i < stbds_arrlen(camera->components); i++) {
+		D_Component* cmp = &camera->components[i];
+		if (cmp->type == S_COMPONENT_TYPE_CAMERA) {
+			cameraCmp = &cmp->camera;
+			break;
+		}
+	}
+	if (cameraCmp == NULL) {
+		return false;
+	}
+	return true;
 }
 
 void D_FreeScene(D_Scene **scene)
