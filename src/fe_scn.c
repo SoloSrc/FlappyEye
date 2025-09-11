@@ -74,6 +74,16 @@ D_Node *D_InitNode(const char *name)
 	return node;
 }
 
+D_Node *D_InitCameraNode(const char *name)
+{
+	D_Node* camera = D_InitNode(name);
+	D_AddPositionComponent(camera, 0, 0);
+	D_CameraComponent cameraCmp = { .type = S_COMPONENT_TYPE_CAMERA, };
+	D_Component unionCmp = { .camera = cameraCmp };
+	stbds_arrput(camera->components, unionCmp);
+	return camera;
+}
+
 void D_FreeNode(D_Node** node)
 {
 	if (node == NULL || *node == NULL) {

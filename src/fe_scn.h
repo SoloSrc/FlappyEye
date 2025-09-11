@@ -11,6 +11,7 @@ typedef enum D_ComponentType {
 	// Add more component types as needed
 	S_COMPONENT_TYPE_POSITION,
 	S_COMPONENT_TYPE_SPRITE,
+	S_COMPONENT_TYPE_CAMERA,
 } D_ComponentType;
 
 typedef struct D_PositionComponent {
@@ -32,10 +33,15 @@ typedef struct D_SpriteComponent {
 	D_Sprite* sprite; // Pointer to the sprite itself with its data
 } D_SpriteComponent;
 
+typedef struct D_CameraComponent {
+	D_ComponentType type; // Type of the component, a field shared in all components
+} D_CameraComponent;
+
 typedef union D_Component {
 	D_ComponentType type; // Type of the component, a field shared in all components
 	D_SpriteComponent sprite; // Sprite component
 	D_PositionComponent position; // Position component
+	D_CameraComponent camera; // Camera component
 } D_Component;
 
 typedef struct D_Node {
@@ -47,12 +53,14 @@ typedef struct D_Node {
 
 typedef struct D_Scene {
 	D_Node* root; // Pointer to the root Node of this scene
+	D_Node* camera; // Pointer to a special Node that represents the camera
 } D_Scene;
 
 D_Scene* D_InitScene(D_Node *root);
 void D_FreeScene(D_Scene** scene);
 
 D_Node* D_InitNode(const char* name);
+D_Node* D_InitCameraNode(const char* name);
 void D_FreeNode(D_Node** node);
 
 void D_AddPositionComponent(D_Node* node, float x, float y);
