@@ -56,6 +56,8 @@ bool A_Init(A_Context* ctx, const char* filepath)
 	ctx->window = NULL;
 	ctx->renderer = NULL;
 	ctx->sprites = NULL;
+	ctx->updateCallbacks = NULL;
+	stbds_hmdefault(ctx->updateCallbacks, NULL);
 
 	// inits
 	if (!a_initSDL()) {
@@ -81,6 +83,9 @@ void A_Quit(A_Context* ctx)
 		}
 		stbds_shfree(ctx->sprites);
 		ctx->sprites = NULL;
+	}
+	if (ctx->updateCallbacks != NULL) {
+		stbds_hmfree(ctx->updateCallbacks);
 	}
 	if (ctx->assets != NULL) {
 		zip_close(ctx->assets);
@@ -113,6 +118,7 @@ void A_Run(A_Context* ctx, D_Scene* scene)
 		Uint64 newTime = SDL_GetTicks();
 		float deltaTime = (newTime - lastTime) / 1000.0f;
 		lastTime = newTime;
+		S_ApplyFrameUpdates(ctx, scene, deltaTime);
 		S_ApplyVelocity(ctx, scene, deltaTime);
 
 		SDL_SetRenderDrawColor(ctx->renderer, 0x00, 0x00, 0x00, 0x00);
@@ -121,4 +127,9 @@ void A_Run(A_Context* ctx, D_Scene* scene)
 
 		SDL_RenderPresent(ctx->renderer);
 	}
+}
+
+void A_RegisterUpdateCallback(A_Context *ctx, D_Node* node, D_FrameUpdate callback)
+{
+	stbds_hmput(ctx->updateCallbacks, (uintptr_t)node, callback);
 }

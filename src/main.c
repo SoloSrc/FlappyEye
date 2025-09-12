@@ -10,6 +10,15 @@ static void quit(void)
 	A_Quit(&ctx);
 }
 
+static void flappy_update(D_Node* node, float deltaTime)
+{
+	D_VelocityComponent* velCmp = D_GetVelocityComponent(node);
+	if (velCmp == NULL) {
+		return;
+	}
+	velCmp->y += -60.0f * deltaTime;
+}
+
 int main()
 {
 	atexit(quit);
@@ -20,7 +29,8 @@ int main()
 	
 	D_Node* flappy = D_InitNode("flappy");
 	D_AddPositionComponent(flappy, -50.0f, -50.0f);
-	D_AddVelocityComponent(flappy, 0.0, -9.8f);
+	D_AddVelocityComponent(flappy, 0.0, 0.0);
+	A_RegisterUpdateCallback(&ctx, flappy, flappy_update);
 	
 	D_Node* spriteNode = D_InitNode("sprite");
 	D_AddPositionComponent(spriteNode, -80, 85);

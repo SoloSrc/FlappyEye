@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #include "fe_sys.h"
 
 #include "fe_app.h"
@@ -83,7 +85,6 @@ static void s_renderSprites(A_Context* ctx, D_Scene* scene, D_Node* node, SDL_FP
 	}
 
 	SDL_FPoint screenPos = s_calculateScreenPosition(ctx, scene->camera, worldPos);
-	SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "%s x: %f, y: %f", node->name, screenPos.x, screenPos.y);
 
 	// Render sprite
 	SDL_FRect dst = {
@@ -148,4 +149,28 @@ void S_ApplyVelocity(A_Context *ctx, D_Scene *scene, float deltaTime)
 		return;
 	}
 	s_applyVelocity(scene->root, deltaTime);
+}
+
+static void s_applyFrameUpdates(A_Context* ctx, D_Node* node, float deltaTime)
+{
+	for (int i = 0; i < stbds_arrlen(node->children); i++) {
+		D_Node* child = node->children[i];
+		s_applyFrameUpdates(ctx, child, deltaTime);
+	}
+	D_FrameUpdate f = stbds_hmget(ctx->updateCallbacks, (uintptr_t)node);
+	if (f == NULL) {
+		return;
+	}
+	f(node, deltaTime);
+}
+
+void S_ApplyFrameUpdates(A_Context* ctx, D_Scene *scene, float deltaTime)
+{
+	if (ctx == NULL) {
+		return;
+	}
+	if (scene == NULL || scene->root == NULL) {
+		return;
+	}
+	s_applyFrameUpdates(ctx, scene->root, deltaTime);
 }

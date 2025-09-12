@@ -151,7 +151,7 @@ void D_AddSpriteComponent(D_Node* node, D_Sprite* sprite)
 	stbds_arrput(node->components, unionCmp);
 }
 
-void D_AddVelocityComponent(D_Node *node, float x, float y)
+void D_AddVelocityComponent(D_Node* node, float x, float y)
 {
 	if (node == NULL) {
 		return;
@@ -159,4 +159,19 @@ void D_AddVelocityComponent(D_Node *node, float x, float y)
 	D_VelocityComponent cmp = { .type = D_COMPONENT_TYPE_VELOCITY, .x = x, .y = y };
 	D_Component unionCmp = { .velocity = cmp };
 	stbds_arrput(node->components, unionCmp);
+}
+
+D_VelocityComponent* D_GetVelocityComponent(D_Node* node)
+{
+	if (node == NULL) {
+		return NULL;
+	}
+	for (int i = 0; i < stbds_arrlen(node->components); i++) {
+		D_Component* cmp = &node->components[i];
+		if (cmp != NULL && cmp->type == D_COMPONENT_TYPE_VELOCITY) {
+			D_VelocityComponent* velCmp = &cmp->velocity;
+			return velCmp;
+		}
+	}
+	return NULL;
 }

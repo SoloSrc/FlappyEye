@@ -61,6 +61,8 @@ typedef struct D_Node {
 	D_Component* components; // Array of components, managed by stb_ds
 } D_Node;
 
+typedef void(*D_FrameUpdate)(D_Node* node, float deltaTime);
+
 typedef struct D_Scene {
 	D_Node* root; // Pointer to the root Node of this scene
 	D_Node* camera; // Pointer to a special Node that represents the camera
@@ -78,5 +80,6 @@ void D_FreeNode(D_Node** node);
 void D_AddPositionComponent(D_Node* node, float x, float y);
 void D_AddSpriteComponent(D_Node* node, D_Sprite* sprite);
 void D_AddVelocityComponent(D_Node* node, float x, float y);
+D_VelocityComponent* D_GetVelocityComponent(D_Node* node);
 
 #endif // FE_SCN_H
