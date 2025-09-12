@@ -112,3 +112,40 @@ void S_RenderScene(A_Context* ctx, D_Scene* scene)
 	SDL_FPoint root = { .x = 0.0f, .y = 0.0f };
 	s_renderSprites(ctx, scene, scene->root, root);
 }
+
+void s_applyVelocity(D_Node* node, float deltaTime)
+{
+	for (int i = 0; i < stbds_arrlen(node->children); i++) {
+		D_Node* child = node->children[i];
+		s_applyVelocity(child, deltaTime);
+	}
+	D_PositionComponent* posCmp = NULL;
+	D_VelocityComponent* velCmp = NULL;
+	for (int i = 0; i < stbds_arrlen(node->components); i++) {
+		D_Component* cmp = &node->components[i];
+		if (cmp->type == D_COMPONENT_TYPE_POSITION) {
+			posCmp = &cmp->position;
+			continue;
+		}
+		if (cmp->type == D_COMPONENT_TYPE_VELOCITY) {
+			velCmp = &cmp->velocity;
+			continue;
+		}
+	}
+	if (posCmp == NULL || velCmp == NULL) {
+		return;
+	}
+	posCmp->x += velCmp->x * deltaTime;
+	posCmp->y += velCmp->y * deltaTime;
+}
+
+void S_ApplyVelocity(A_Context *ctx, D_Scene *scene, float deltaTime)
+{
+	if (ctx == NULL) {
+		return;
+	}
+	if (scene == NULL || scene->root == NULL) {
+		return;
+	}
+	s_applyVelocity(scene->root, deltaTime);
+}

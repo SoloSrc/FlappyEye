@@ -103,15 +103,20 @@ void A_Run(A_Context* ctx, D_Scene* scene)
 		return;
 	}
 	SDL_Event event;
+	Uint64 lastTime = SDL_GetTicks();
 	while (1) {
 		SDL_PollEvent(&event);
 		if (event.type == SDL_EVENT_QUIT) {
 			break;
 		}
 
+		Uint64 newTime = SDL_GetTicks();
+		float deltaTime = (newTime - lastTime) / 1000.0f;
+		lastTime = newTime;
+		S_ApplyVelocity(ctx, scene, deltaTime);
+
 		SDL_SetRenderDrawColor(ctx->renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(ctx->renderer);
-
 		S_RenderScene(ctx, scene);
 
 		SDL_RenderPresent(ctx->renderer);

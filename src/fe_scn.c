@@ -150,3 +150,13 @@ void D_AddSpriteComponent(D_Node* node, D_Sprite* sprite)
 	D_Component unionCmp = { .sprite = cmp };
 	stbds_arrput(node->components, unionCmp);
 }
+
+void D_AddVelocityComponent(D_Node *node, float x, float y)
+{
+	if (node == NULL) {
+		return;
+	}
+	D_VelocityComponent cmp = { .type = D_COMPONENT_TYPE_VELOCITY, .x = x, .y = y };
+	D_Component unionCmp = { .velocity = cmp };
+	stbds_arrput(node->components, unionCmp);
+}

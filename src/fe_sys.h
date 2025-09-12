@@ -7,5 +7,6 @@
 #define FE_SYS_H
 
 void S_RenderScene(A_Context* ctx, D_Scene* scene);
+void S_ApplyVelocity(A_Context* ctx, D_Scene* scene, float deltaTime);
 
 #endif // !FE_SYS_H

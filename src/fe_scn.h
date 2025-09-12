@@ -14,6 +14,7 @@ typedef enum D_ComponentType {
 	D_COMPONENT_TYPE_POSITION,
 	D_COMPONENT_TYPE_SPRITE,
 	D_COMPONENT_TYPE_CAMERA,
+	D_COMPONENT_TYPE_VELOCITY,
 } D_ComponentType;
 
 typedef struct D_PositionComponent {
@@ -39,11 +40,18 @@ typedef struct D_CameraComponent {
 	D_ComponentType type; // Type of the component, a field shared in all components
 } D_CameraComponent;
 
+typedef struct D_VelocityComponent {
+	D_ComponentType type; // Type of the component, a field shared in all components
+	float x; // Horizontal component of the velocity
+	float y; // Vertical component of the velocity
+} D_VelocityComponent;
+
 typedef union D_Component {
 	D_ComponentType type; // Type of the component, a field shared in all components
 	D_SpriteComponent sprite; // Sprite component
 	D_PositionComponent position; // Position component
 	D_CameraComponent camera; // Camera component
+	D_VelocityComponent velocity; // Velocity component
 } D_Component;
 
 typedef struct D_Node {
@@ -69,5 +77,6 @@ void D_FreeNode(D_Node** node);
 
 void D_AddPositionComponent(D_Node* node, float x, float y);
 void D_AddSpriteComponent(D_Node* node, D_Sprite* sprite);
+void D_AddVelocityComponent(D_Node* node, float x, float y);
 
 #endif // FE_SCN_H

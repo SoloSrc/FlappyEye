@@ -20,6 +20,7 @@ int main()
 	
 	D_Node* flappy = D_InitNode("flappy");
 	D_AddPositionComponent(flappy, -50.0f, -50.0f);
+	D_AddVelocityComponent(flappy, 0.0, -9.8f);
 	
 	D_Node* spriteNode = D_InitNode("sprite");
 	D_AddPositionComponent(spriteNode, -80, 85);
