@@ -95,7 +95,11 @@ D_Node *D_InitNode(const char *name)
 	}
 	size_t nameLen = strlen(name) + 1 /* NULL char */;
 	node->name = malloc(sizeof(char) * nameLen);
-	strncpy(node->name, name, nameLen);
+	if (node->name == NULL) {
+		free(node);
+		return NULL;
+	}
+	strncpy_s(node->name, nameLen, name, nameLen);
 	node->parent = NULL;
 	node->children = NULL;
 	node->components = NULL;
