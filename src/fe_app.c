@@ -49,6 +49,17 @@ static bool a_initAssets(A_Context* ctx, const char* filepath)
 	return true;
 }
 
+static void a_freeInputMap(A_InputAction* map)
+{
+	if (map == NULL) {
+		return;
+	}
+	for (int i = 0; i < stbds_arrlen(map); i++) {
+		stbds_arrfree(map[i].inputs);
+	}
+	stbds_arrfree(map);
+}
+
 bool A_Init(A_Context* ctx, const char* filepath)
 {
 	// clean ups
@@ -58,6 +69,7 @@ bool A_Init(A_Context* ctx, const char* filepath)
 	ctx->sprites = NULL;
 	ctx->updateCallbacks = NULL;
 	stbds_hmdefault(ctx->updateCallbacks, NULL);
+	ctx->inputMap = NULL;
 
 	// inits
 	if (!a_initSDL()) {
@@ -86,6 +98,11 @@ void A_Quit(A_Context* ctx)
 	}
 	if (ctx->updateCallbacks != NULL) {
 		stbds_hmfree(ctx->updateCallbacks);
+		ctx->updateCallbacks = NULL;
+	}
+	if (ctx->inputMap != NULL) {
+		a_freeInputMap(ctx->inputMap);
+		ctx->inputMap = NULL;
 	}
 	if (ctx->assets != NULL) {
 		zip_close(ctx->assets);

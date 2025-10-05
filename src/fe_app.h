@@ -28,12 +28,31 @@ typedef struct A_UpdateCallbackKV {
 	D_FrameUpdate value;
 } A_UpdateCallbackKV;
 
+typedef enum A_Input {
+	A_INPUT_UNKNOWN = 0,
+	A_INPUT_UP_PRESSED,
+	A_INPUT_DOWN_PRESSED,
+	A_INPUT_LEFT_PRESSED,
+	A_INPUT_RIGHT_PRESSED,
+	A_INPUT_SPACE_PRESSED,
+	A_INPUT_LEFT_MOUSE_PRESSED,
+	// Add more inputs as needed
+} A_Input;
+
+typedef uint64_t A_InputActionID;
+
+typedef struct A_InputAction {
+	A_InputActionID actionID;
+	A_Input* inputs; // Array of inputs that trigger this action, managed by stb_ds
+} A_InputAction;
+
 typedef struct A_Context {
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	zip_t* assets;
 	A_SpriteKV* sprites; // HashMap of loaded sprites, managed by stb_ds
 	A_UpdateCallbackKV* updateCallbacks; // Array of callbacks, managed by stb_ds
+	A_InputAction* inputMap; // Array of input actions, managed by stb_ds
 } A_Context;
 
 bool A_Init(A_Context* ctx, const char* name);

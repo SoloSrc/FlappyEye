@@ -12,6 +12,8 @@ add_executable(FlappyEye
 	"fe_app.h"
 	"fe_app.c"
 	"fe_img.c"
+	"fe_inp.h"
+	"fe_inp.c"
 	"fe_scn.h"
 	"fe_scn.c"
 	"fe_sys.h"
