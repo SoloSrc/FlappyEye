@@ -15,6 +15,7 @@ typedef enum D_ComponentType {
 	D_COMPONENT_TYPE_SPRITE,
 	D_COMPONENT_TYPE_CAMERA,
 	D_COMPONENT_TYPE_VELOCITY,
+	D_COMPONENT_TYPE_SPRITE_ANIMATION,
 } D_ComponentType;
 
 typedef struct D_PositionComponent {
@@ -46,12 +47,19 @@ typedef struct D_VelocityComponent {
 	float y; // Vertical component of the velocity
 } D_VelocityComponent;
 
+typedef struct D_SpriteAnimationComponent {
+	D_ComponentType type; // Type of the component, a field shared in all components
+	float frameDuration; // Duration of each frame in seconds
+	float elapsedTime; // Time elapsed since the last frame change
+} D_SpriteAnimationComponent;
+
 typedef union D_Component {
 	D_ComponentType type; // Type of the component, a field shared in all components
 	D_SpriteComponent sprite; // Sprite component
 	D_PositionComponent position; // Position component
 	D_CameraComponent camera; // Camera component
 	D_VelocityComponent velocity; // Velocity component
+	D_SpriteAnimationComponent animation; // Sprite Animation component
 } D_Component;
 
 typedef struct D_Node {
@@ -79,6 +87,7 @@ void D_FreeNode(D_Node** node);
 
 void D_AddPositionComponent(D_Node* node, float x, float y);
 void D_AddSpriteComponent(D_Node* node, D_Sprite* sprite);
+void D_AddAnimationComponent(D_Node* node, int framesPerSec);
 void D_AddVelocityComponent(D_Node* node, float x, float y);
 D_VelocityComponent* D_GetVelocityComponent(D_Node* node);
 

@@ -6,7 +6,7 @@
 #ifndef FE_SYS_H
 #define FE_SYS_H
 
-void S_RenderScene(A_Context* ctx, D_Scene* scene);
+void S_RenderScene(A_Context* ctx, D_Scene* scene, float deltaTime);
 void S_ApplyVelocity(A_Context* ctx, D_Scene* scene, float deltaTime);
 void S_ApplyFrameUpdates(A_Context* ctx, D_Scene* scene, float deltaTime);
 

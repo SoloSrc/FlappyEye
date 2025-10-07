@@ -155,6 +155,20 @@ void D_AddSpriteComponent(D_Node* node, D_Sprite* sprite)
 	stbds_arrput(node->components, unionCmp);
 }
 
+void D_AddAnimationComponent(D_Node* node, int framesPerSec)
+{
+	if (node == NULL || framesPerSec <= 1) {
+		return;
+	}
+	float frameDuration = 1.0f / (float)framesPerSec;
+	D_SpriteAnimationComponent cmp = {
+		.type = D_COMPONENT_TYPE_SPRITE_ANIMATION,
+		.frameDuration = frameDuration, .elapsedTime = 0.0f
+	};
+	D_Component unionCmp = { .animation = cmp };
+	stbds_arrput(node->components, unionCmp);
+}
+
 void D_AddVelocityComponent(D_Node* node, float x, float y)
 {
 	if (node == NULL) {

@@ -43,6 +43,7 @@ int main()
 	
 	D_Node* spriteNode = D_InitNode("sprite");
 	D_AddPositionComponent(spriteNode, -80, 85);
+	D_AddAnimationComponent(spriteNode, 10);
 	D_AddSpriteComponent(spriteNode, sprite);
 
 	D_AttachChildNode(flappy, spriteNode);

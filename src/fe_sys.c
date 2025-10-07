@@ -40,9 +40,35 @@ static SDL_FPoint s_calculateScreenPosition(A_Context* ctx, D_Node* camera, SDL_
 	return screenPos;
 }
 
-static void s_renderSprites(A_Context* ctx, D_Scene* scene, D_Node* node, SDL_FPoint parentPos)
+static SDL_FRect s_calculateSrcRect(D_Sprite* sprite, D_SpriteAnimationComponent* animCmp, float deltaTime)
+{
+	if (sprite->frames <= 1 || animCmp == NULL) {
+		SDL_FRect src = {
+			.x = 0.0f,
+			.y = 0.0f,
+			.w = sprite->width,
+			.h = sprite->height
+		};
+		return src;
+	}
+	int currFrame = ((int)(animCmp->elapsedTime / animCmp->frameDuration));
+	int frame = currFrame % sprite->frames;
+	int col = frame % sprite->cols;
+	int row = frame / sprite->cols;
+	SDL_FRect src = {
+		.x = col * sprite->width,
+		.y = row * sprite->height,
+		.w = sprite->width,
+		.h = sprite->height
+	};
+	animCmp->elapsedTime += deltaTime;
+	return src;
+}
+
+static void s_renderSprites(A_Context* ctx, D_Scene* scene, D_Node* node, SDL_FPoint parentPos, float deltaTime)
 {
 	D_Sprite* nodeSprite = NULL;
+	D_SpriteAnimationComponent* animCmp = NULL;
 	SDL_FPoint localPos = { 0.0f, 0.0f };
 	bool hasPos = false;
 	for (int i = 0; i < stbds_arrlen(node->components); i++) {
@@ -62,6 +88,10 @@ static void s_renderSprites(A_Context* ctx, D_Scene* scene, D_Node* node, SDL_FP
 				);
 			}
 		}
+
+		if (cmp->type == D_COMPONENT_TYPE_SPRITE_ANIMATION) {
+			animCmp = &cmp->animation;
+		}
 		
 		if (cmp->type == D_COMPONENT_TYPE_POSITION) {
 			D_PositionComponent* posCmp = &cmp->position;
@@ -77,7 +107,7 @@ static void s_renderSprites(A_Context* ctx, D_Scene* scene, D_Node* node, SDL_FP
 
 	for (int i = 0; i < stbds_arrlen(node->children); i++) {
 		D_Node* child = node->children[i];
-		s_renderSprites(ctx, scene, child, worldPos);
+		s_renderSprites(ctx, scene, child, worldPos, deltaTime);
 	}
 
 	if (nodeSprite == NULL) {
@@ -93,16 +123,11 @@ static void s_renderSprites(A_Context* ctx, D_Scene* scene, D_Node* node, SDL_FP
 		.w = nodeSprite->width,
 		.h = nodeSprite->height
 	};
-	SDL_FRect src = {
-		.x = 0,
-		.y = 0,
-		.w = nodeSprite->width,
-		.h = nodeSprite->height
-	};
+	SDL_FRect src = s_calculateSrcRect(nodeSprite, animCmp, deltaTime);
 	SDL_RenderTexture(ctx->renderer, (SDL_Texture*)nodeSprite->texture, &src, &dst);
 }
 
-void S_RenderScene(A_Context* ctx, D_Scene* scene)
+void S_RenderScene(A_Context* ctx, D_Scene* scene, float deltaTime)
 {
 	if (ctx == NULL || ctx->renderer == NULL) {
 		return;
@@ -111,10 +136,10 @@ void S_RenderScene(A_Context* ctx, D_Scene* scene)
 		return;
 	}
 	SDL_FPoint root = { .x = 0.0f, .y = 0.0f };
-	s_renderSprites(ctx, scene, scene->root, root);
+	s_renderSprites(ctx, scene, scene->root, root, deltaTime);
 }
 
-void s_applyVelocity(D_Node* node, float deltaTime)
+static void s_applyVelocity(D_Node* node, float deltaTime)
 {
 	for (int i = 0; i < stbds_arrlen(node->children); i++) {
 		D_Node* child = node->children[i];

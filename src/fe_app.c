@@ -140,7 +140,7 @@ void A_Run(A_Context* ctx, D_Scene* scene)
 
 		SDL_SetRenderDrawColor(ctx->renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(ctx->renderer);
-		S_RenderScene(ctx, scene);
+		S_RenderScene(ctx, scene, deltaTime);
 
 		SDL_RenderPresent(ctx->renderer);
 	}
