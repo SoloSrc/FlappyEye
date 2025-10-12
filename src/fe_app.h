@@ -18,11 +18,6 @@
 
 #define STBDS_NO_SHORT_NAMES
 
-typedef struct A_SpriteKV {
-	char* key; // Path to the sprite asset
-	D_Sprite* value; // Pointer to the loaded sprite
-} A_SpriteKV;
-
 typedef struct A_UpdateCallbackKV {
 	uintptr_t key;
 	D_FrameUpdate value;
@@ -50,8 +45,8 @@ typedef struct A_Context {
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	zip_t* assets;
-	A_SpriteKV* sprites; // HashMap of loaded sprites, managed by stb_ds
-	A_UpdateCallbackKV* updateCallbacks; // Array of callbacks, managed by stb_ds
+	SDL_Texture** textures; // Array of loaded textures, managed by stb_ds
+	A_UpdateCallbackKV* updateCallbacks; // HashSet of callbacks, managed by stb_ds
 	A_InputAction* inputMap; // Array of input actions, managed by stb_ds
 } A_Context;
 

@@ -57,7 +57,9 @@ int main()
 
 	D_FreeScene(&scene);
 
-	free(atlas); // TODO: remove this later
+	// TODO: find better place for this
+	free(sprite);
+	free(atlas);
 
 	return 0;
 }

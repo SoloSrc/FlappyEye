@@ -66,7 +66,7 @@ bool A_Init(A_Context* ctx, const char* filepath)
 	ctx->assets = NULL;
 	ctx->window = NULL;
 	ctx->renderer = NULL;
-	ctx->sprites = NULL;
+	ctx->textures = NULL;
 	ctx->updateCallbacks = NULL;
 	stbds_hmdefault(ctx->updateCallbacks, NULL);
 	ctx->inputMap = NULL;
@@ -87,14 +87,12 @@ bool A_Init(A_Context* ctx, const char* filepath)
 
 void A_Quit(A_Context* ctx)
 {
-	if (ctx->sprites != NULL) {
-		for (int i = 0; i < stbds_shlen(ctx->sprites); i++) {
-			if (ctx->sprites[i].value != NULL) {
-				SDL_DestroyTexture(ctx->sprites[i].value->texture);
-			}
+	if (ctx->textures != NULL) {
+		for (int i = 0; i < stbds_arrlen(ctx->textures); i++) {
+			SDL_DestroyTexture(ctx->textures[i]);
 		}
-		stbds_shfree(ctx->sprites);
-		ctx->sprites = NULL;
+		stbds_arrfree(ctx->textures);
+		ctx->textures = NULL;
 	}
 	if (ctx->updateCallbacks != NULL) {
 		stbds_hmfree(ctx->updateCallbacks);

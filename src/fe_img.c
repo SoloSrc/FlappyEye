@@ -150,10 +150,10 @@ D_Sprite* A_LoadSprite(A_Context * ctx, const char* path)
 		SDL_DestroyTexture(texture);
 		return NULL;
 	}
+	stbds_arrput(ctx->textures, texture);
 	sprite->texture = texture;
 	sprite->frames = 1; // Default to 1 frame in this function
 	SDL_GetTextureSize(texture, &sprite->width, &sprite->height);
-	stbds_shput(ctx->sprites, path, sprite);
 	return sprite;
 }
 
@@ -213,5 +213,6 @@ D_TileAtlas* A_LoadTileAtlas(A_Context* ctx, const char* path, int tileWith, int
 		free(atlas);
 		return NULL;
 	}
+	stbds_arrput(ctx->textures, texture);
 	return atlas;
 }
