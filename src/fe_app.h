@@ -62,5 +62,6 @@ void A_RegisterUpdateCallback(A_Context *ctx, D_Node* node, D_FrameUpdate callba
 
 D_Sprite* A_LoadSprite(A_Context* ctx, const char* path);
 D_Sprite* A_LoadSpriteSheet(A_Context* ctx, const char* path, int rows, int cols);
+D_TileAtlas* A_LoadTileAtlas(A_Context* ctx, const char* path, int tileWith, int tileHeight);
 
 #endif // FE_APP_H

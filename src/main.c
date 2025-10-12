@@ -32,6 +32,7 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 	D_Sprite* sprite = A_LoadSpriteSheet(&ctx, "sprites/flappy.png", 1, 8);
+	D_TileAtlas* atlas = A_LoadTileAtlas(&ctx, "tiles/atlas.png", 16, 16);
 	A_Input spaceInput = A_INPUT_SPACE_PRESSED;
 	jumpInputAction = A_CreateInputAction(&ctx);
 	A_AssociateInputToAction(&ctx, jumpInputAction, spaceInput);
@@ -55,6 +56,8 @@ int main()
 	A_Run(&ctx, scene);
 
 	D_FreeScene(&scene);
+
+	free(atlas); // TODO: remove this later
 
 	return 0;
 }

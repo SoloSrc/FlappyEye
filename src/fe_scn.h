@@ -16,6 +16,7 @@ typedef enum D_ComponentType {
 	D_COMPONENT_TYPE_CAMERA,
 	D_COMPONENT_TYPE_VELOCITY,
 	D_COMPONENT_TYPE_SPRITE_ANIMATION,
+	D_COMPONENT_TYPE_TILEMAP,
 } D_ComponentType;
 
 typedef struct D_PositionComponent {
@@ -32,10 +33,27 @@ typedef struct D_Sprite {
 	int cols; // Number of columns in the sprite sheet
 } D_Sprite;
 
+typedef struct D_TileAtlas {
+	void* texture; // Pointer to the texture (e.g., SDL_Texture*)
+	int tileWidth; // Width of each tile
+	int tileHeight; // Height of each tile
+	int rows; // Number of rows in the atlas
+	int cols; // Number of columns in the atlas
+} D_TileAtlas;
+
 typedef struct D_SpriteComponent {
 	D_ComponentType type; // Type of the component, a field shared in all components
 	D_Sprite* sprite; // Pointer to the sprite itself with its data
 } D_SpriteComponent;
+
+typedef struct D_TileMapComponent {
+	D_ComponentType type; // Type of the component, a field shared in all components
+	D_TileAtlas* atlas; // Pointer to the tile atlas
+	int* tiles; // 1D array representing the tile indices in row-major order, managed by stb_ds
+	int width; // Number of tiles horizontally
+	int height; // Number of tiles vertically
+	bool repeatHorizontally; // Whether the tilemap should repeat horizontally
+} D_TileMapComponent;
 
 typedef struct D_CameraComponent {
 	D_ComponentType type; // Type of the component, a field shared in all components
@@ -60,6 +78,7 @@ typedef union D_Component {
 	D_CameraComponent camera; // Camera component
 	D_VelocityComponent velocity; // Velocity component
 	D_SpriteAnimationComponent animation; // Sprite Animation component
+	D_TileMapComponent tilemap; // Tilemap component
 } D_Component;
 
 typedef struct D_Node {
@@ -90,5 +109,6 @@ void D_AddSpriteComponent(D_Node* node, D_Sprite* sprite);
 void D_AddAnimationComponent(D_Node* node, int framesPerSec);
 void D_AddVelocityComponent(D_Node* node, float x, float y);
 D_VelocityComponent* D_GetVelocityComponent(D_Node* node);
+void D_AddTileMapComponent(D_Node* node, D_TileAtlas* atlas, bool repeatHorizontally);
 
 #endif // FE_SCN_H

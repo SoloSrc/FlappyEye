@@ -66,7 +66,7 @@ static bool a_copyBytesToStream(A_Context* ctx, SDL_IOStream* io, a_assetStat* s
 	return true;
 }
 
-D_Sprite* A_LoadSprite(A_Context* ctx, const char* path)
+static SDL_Texture* a_loadTexture(A_Context* ctx, const char* path)
 {
 	// load file statistics
 	a_assetStat stat;
@@ -131,6 +131,15 @@ D_Sprite* A_LoadSprite(A_Context* ctx, const char* path)
 		);
 		return NULL;
 	}
+	return texture;
+}
+
+D_Sprite* A_LoadSprite(A_Context * ctx, const char* path)
+{
+	SDL_Texture* texture = a_loadTexture(ctx, path);
+	if (texture == NULL) {
+		return NULL; // Error already logged in a_loadTexture
+	}
 	D_Sprite* sprite = malloc(sizeof(D_Sprite));
 	if (sprite == NULL) {
 		SDL_LogError(
@@ -169,4 +178,40 @@ D_Sprite* A_LoadSpriteSheet(A_Context* ctx, const char* path, int rows, int cols
 	sprite->height /= rows; // Calculate height of each frame
 	sprite->cols = cols; // Store the number of columns
 	return sprite;
+}
+
+D_TileAtlas* A_LoadTileAtlas(A_Context* ctx, const char* path, int tileWith, int tileHeight)
+{
+	SDL_Texture* texture = a_loadTexture(ctx, path);
+	if (texture == NULL) {
+		return NULL; // Error already logged in a_loadTexture
+	}
+	D_TileAtlas* atlas = malloc(sizeof(D_TileAtlas));
+	if (atlas == NULL) {
+		SDL_LogError(
+			SDL_LOG_CATEGORY_APPLICATION,
+			"Cannot allocate memory for tile atlas: %s",
+			path
+		);
+		SDL_DestroyTexture(texture);
+		return NULL;
+	}
+	atlas->texture = texture;
+	atlas->tileWidth = tileWith;
+	atlas->tileHeight = tileHeight;
+	float texW = -1, texH = -1;
+	SDL_GetTextureSize(texture, &texW, &texH);
+	atlas->cols = ((int)texW) / tileWith;
+	atlas->rows = ((int)texH) / tileHeight;
+	if (atlas->cols <= 0 || atlas->rows <= 0) {
+		SDL_LogError(
+			SDL_LOG_CATEGORY_APPLICATION,
+			"Invalid tile dimensions (%d x %d) for asset %s",
+			tileWith, tileHeight, path
+		);
+		SDL_DestroyTexture(atlas->texture);
+		free(atlas);
+		return NULL;
+	}
+	return atlas;
 }

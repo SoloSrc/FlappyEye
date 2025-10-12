@@ -5,6 +5,7 @@ find_package(Stb REQUIRED)
 
 create_zip(assets
 	"sprites/flappy.png"
+	"tiles/atlas.png"
 )
 
 add_executable(FlappyEye

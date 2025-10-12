@@ -193,3 +193,20 @@ D_VelocityComponent* D_GetVelocityComponent(D_Node* node)
 	}
 	return NULL;
 }
+
+void D_AddTileMapComponent(D_Node* node, D_TileAtlas* atlas, bool repeatHorizontally)
+{
+	if (node == NULL || atlas == NULL) {
+		return;
+	}
+	D_TileMapComponent cmp = {
+		.type = D_COMPONENT_TYPE_TILEMAP,
+		.atlas = atlas,
+		.tiles = NULL,
+		.width = -1,
+		.height = -1,
+		.repeatHorizontally = repeatHorizontally
+	};
+	D_Component unionCmp = { .tilemap = cmp };
+	stbds_arrput(node->components, unionCmp);
+}
