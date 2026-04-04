@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "fe_scn.h"
@@ -99,7 +100,7 @@ D_Node *D_InitNode(const char *name)
 		free(node);
 		return NULL;
 	}
-	strncpy_s(node->name, nameLen, name, nameLen);
+	snprintf(node->name, nameLen, "%s", name);
 	node->parent = NULL;
 	node->children = NULL;
 	node->components = NULL;
