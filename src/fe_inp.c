@@ -2,6 +2,12 @@
 
 #include "fe_inp.h"
 
+static bool a_getMouseState(uint button)
+{
+	uint32_t mouseState = SDL_GetMouseState(NULL, NULL);
+	return (mouseState & SDL_BUTTON_MASK(button)) != 0;
+}
+
 static bool a_checkInput(A_Input input)
 {
 	const bool* state = SDL_GetKeyboardState(NULL);
@@ -16,10 +22,8 @@ static bool a_checkInput(A_Input input)
 		return state[SDL_SCANCODE_RIGHT];
 	case A_INPUT_SPACE_PRESSED:
 		return state[SDL_SCANCODE_SPACE];
-	case A_INPUT_LEFT_MOUSE_PRESSED: {
-		uint32_t mouseState = SDL_GetMouseState(NULL, NULL);
-		return (mouseState & SDL_BUTTON_MASK(SDL_BUTTON_LEFT)) != 0;
-	}
+	case A_INPUT_LEFT_MOUSE_PRESSED:
+		return a_getMouseState(SDL_BUTTON_LEFT);
 	default:
 		return false;
 	}
@@ -58,4 +62,19 @@ bool A_IsActionPressed(A_Context* ctx, A_InputActionID actionID)
 		}
 	}
 	return false;
+}
+
+D_Vector2 A_GetInputVector(
+	A_Context* ctx,
+	A_InputActionID upActionID,
+	A_InputActionID downActionID,
+	A_InputActionID leftActionID,
+	A_InputActionID rightActionID)
+{
+	return (D_Vector2){
+		.x = (A_IsActionPressed(ctx, rightActionID) ? 1.0 : 0.0) +
+			(A_IsActionPressed(ctx, leftActionID) ? -1.0 : 0.0),
+		.y = (A_IsActionPressed(ctx, upActionID) ? 1.0 : 0.0) +
+			(A_IsActionPressed(ctx, downActionID) ? -1.0 : 0.0)
+	};
 }

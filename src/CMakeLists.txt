@@ -19,6 +19,8 @@ add_executable(FlappyEye
 	"fe_scn.c"
 	"fe_sys.h"
 	"fe_sys.c"
+	"fe_vec.h"
+	"fe_vec.c"
 	${assets})
 
 target_compile_options(FlappyEye PRIVATE
