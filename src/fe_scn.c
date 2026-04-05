@@ -195,6 +195,36 @@ D_VelocityComponent* D_GetVelocityComponent(D_Node* node)
 	return NULL;
 }
 
+D_PositionComponent* D_GetPositionComponent(D_Node* node)
+{
+	if (node == NULL) {
+		return NULL;
+	}
+	for (int i = 0; i < stbds_arrlen(node->components); i++) {
+		D_Component* cmp = &node->components[i];
+		if (cmp != NULL && cmp->type == D_COMPONENT_TYPE_POSITION) {
+			D_PositionComponent* posCmp = &cmp->position;
+			return posCmp;
+		}
+	}
+	return NULL;
+}
+
+D_SpriteComponent* D_GetSpriteComponent(D_Node* node)
+{
+	if (node == NULL) {
+		return NULL;
+	}
+	for (int i = 0; i < stbds_arrlen(node->components); i++) {
+		D_Component* cmp = &node->components[i];
+		if (cmp != NULL && cmp->type == D_COMPONENT_TYPE_SPRITE) {
+			D_SpriteComponent* spriteCmp = &cmp->sprite;
+			return spriteCmp;
+		}
+	}
+	return NULL;
+}
+
 void D_AddTileMapComponent(D_Node* node, D_TileAtlas* atlas, bool repeatHorizontally)
 {
 	if (node == NULL || atlas == NULL) {

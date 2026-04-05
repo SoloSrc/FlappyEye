@@ -105,7 +105,9 @@ void D_AttachChildNode(D_Node* parent, D_Node* child);
 void D_FreeNode(D_Node** node);
 
 void D_AddPositionComponent(D_Node* node, float x, float y);
+D_PositionComponent* D_GetPositionComponent(D_Node* node);
 void D_AddSpriteComponent(D_Node* node, D_Sprite* sprite);
+D_SpriteComponent* D_GetSpriteComponent(D_Node* node);
 void D_AddAnimationComponent(D_Node* node, int framesPerSec);
 void D_AddVelocityComponent(D_Node* node, float x, float y);
 D_VelocityComponent* D_GetVelocityComponent(D_Node* node);
