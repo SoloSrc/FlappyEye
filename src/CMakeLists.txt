@@ -5,7 +5,7 @@ find_package(Stb REQUIRED)
 
 create_zip(assets
 	"sprites/flappy.png"
-	"background/mountains_1.png"
+	"background/mountains_4.png"
 )
 
 add_executable(FlappyEye

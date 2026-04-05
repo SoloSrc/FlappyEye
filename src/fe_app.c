@@ -19,7 +19,7 @@ static bool a_initSDL(void)
 
 static bool a_createWindow(A_Context* ctx)
 {
-	if (!SDL_CreateWindowAndRenderer("Flappy Eye", 800, 600, 0, &ctx->window, &ctx->renderer)) {
+	if (!SDL_CreateWindowAndRenderer("Flappy Eye", 768, 576, 0, &ctx->window, &ctx->renderer)) {
 		SDL_LogError(
 			SDL_LOG_CATEGORY_APPLICATION,
 			"Creation of Window and Renderer failed: %s",
