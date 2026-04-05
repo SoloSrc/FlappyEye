@@ -41,6 +41,10 @@ int main()
 	}
 	D_Sprite* flappySprite = A_LoadSpriteSheet(&ctx, "sprites/flappy.png", 1, 8);
 	D_Sprite* mountains4Sprite = A_LoadSpriteSheet(&ctx, "background/mountains_4.png", 1, 1);
+	D_Sprite* mountains1Sprite = A_LoadSpriteSheet(&ctx, "background/mountains_1.png", 1, 1);
+	D_Sprite* mountains2Sprite = A_LoadSpriteSheet(&ctx, "background/mountains_2.png", 1, 1);
+	D_Sprite* mountains3Sprite = A_LoadSpriteSheet(&ctx, "background/mountains_3.png", 1, 1);
+	D_Sprite* skySprite = A_LoadSpriteSheet(&ctx, "background/sky.png", 1, 1);
 
 	moveUpAction = A_CreateInputAction(&ctx);
 	A_AssociateInputToAction(&ctx, moveUpAction, A_INPUT_UP_PRESSED);
@@ -62,13 +66,33 @@ int main()
 	D_AddSpriteComponent(spriteNode, flappySprite);
 	D_AttachChildNode(flappy, spriteNode);
 
-	D_Node* background = D_InitNode("background");
-	D_AddPositionComponent(background, -384.0f, 100.0f);
-	D_AddSpriteComponent(background, mountains4Sprite);
+	D_Node* background1 = D_InitNode("background1");
+	D_AddPositionComponent(background1, -384.0f, 110.0f);
+	D_AddSpriteComponent(background1, mountains4Sprite);
+
+	D_Node* background2 = D_InitNode("background2");
+	D_AddPositionComponent(background2, -384.0f, -30.0f);
+	D_AddSpriteComponent(background2, mountains1Sprite);
+
+	D_Node* background3 = D_InitNode("background3");
+	D_AddPositionComponent(background3, -384.0f, -90.0f);
+	D_AddSpriteComponent(background3, mountains2Sprite);
+
+	D_Node* background4 = D_InitNode("background4");
+	D_AddPositionComponent(background4, -384.0f, -140.0f);
+	D_AddSpriteComponent(background4, mountains3Sprite);
+
+	D_Node* skyNode = D_InitNode("sky");
+	D_AddPositionComponent(skyNode, -384.0f, 290.0f);
+	D_AddSpriteComponent(skyNode, skySprite);
 
 	D_Node* level = D_InitNode("level");
 	D_AddPositionComponent(level, 0.0f, 0.0f);
-	D_AttachChildNode(level, background);
+	D_AttachChildNode(level, skyNode);
+	D_AttachChildNode(level, background1);
+	D_AttachChildNode(level, background2);
+	D_AttachChildNode(level, background3);
+	D_AttachChildNode(level, background4);
 	D_AttachChildNode(level, flappy);
 
 	D_Node *camera = D_InitCameraNode("camera");
