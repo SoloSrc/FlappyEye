@@ -123,6 +123,7 @@ void D_AttachChildNode(D_Node *parent, D_Node *child)
 		return;
 	}
 	stbds_arrput(parent->children, child);
+	child->parent = parent;
 }
 
 void D_FreeNode(D_Node** node)

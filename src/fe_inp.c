@@ -2,7 +2,7 @@
 
 #include "fe_inp.h"
 
-static bool a_getMouseState(uint button)
+static bool a_getMouseState(uint64_t button)
 {
 	uint32_t mouseState = SDL_GetMouseState(NULL, NULL);
 	return (mouseState & SDL_BUTTON_MASK(button)) != 0;
@@ -72,9 +72,9 @@ D_Vector2 A_GetInputVector(
 	A_InputActionID rightActionID)
 {
 	return (D_Vector2){
-		.x = (A_IsActionPressed(ctx, rightActionID) ? 1.0 : 0.0) +
-			(A_IsActionPressed(ctx, leftActionID) ? -1.0 : 0.0),
-		.y = (A_IsActionPressed(ctx, upActionID) ? 1.0 : 0.0) +
-			(A_IsActionPressed(ctx, downActionID) ? -1.0 : 0.0)
+		.x = (A_IsActionPressed(ctx, rightActionID) ? 1.0f : 0.0f) +
+			(A_IsActionPressed(ctx, leftActionID) ? -1.0f : 0.0f),
+		.y = (A_IsActionPressed(ctx, upActionID) ? 1.0f : 0.0f) +
+			(A_IsActionPressed(ctx, downActionID) ? -1.0f : 0.0f)
 	};
 }

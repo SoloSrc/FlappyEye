@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdlib.h>
 #include <time.h>
 
@@ -11,6 +13,9 @@
 #define CLOUD_X_MIN -384.0f
 #define CLOUD_X_MAX  384.0f
 
+const float SPEED = 300.0f;
+const float FIRE_SPEED = 200.0f;
+
 A_Context ctx;
 
 A_InputActionID moveLeftAction;
@@ -18,22 +23,28 @@ A_InputActionID moveRightAction;
 A_InputActionID moveUpAction;
 A_InputActionID moveDownAction;
 
-const float SPEED = 300.0f;
+float timeSinceLastFireBall = 0.0f;
+float fireBallTicksInSecs = 1.0f;
+D_Sprite* fireBallSprite;
 
 static void quit(void)
 {
 	A_Quit(&ctx);
 }
 
+static float randomFloat(float min, float max)
+{
+	return ((float)rand() / (float)RAND_MAX) * (max - min) + min;
+}
+
 static float cloudYCoord()
 {
-	return ((float)rand() / (float)RAND_MAX) * (CLOUD_Y_MAX - CLOUD_Y_MIN) + CLOUD_Y_MIN;
+	return randomFloat(CLOUD_Y_MIN, CLOUD_Y_MAX);
 }
 
 static float cloudXCoord(D_Sprite* sprite)
 {
-	float randX = ((float)rand() / (float)RAND_MAX) * (CLOUD_X_MAX - CLOUD_X_MIN) + CLOUD_X_MIN;
-	return randX + (sprite->width / 2.0f);
+	return randomFloat(CLOUD_X_MIN, CLOUD_X_MAX) + (sprite->width / 2.0f);
 }
 
 static void flappyUpdate(D_Node* node, float deltaTime)
@@ -70,15 +81,43 @@ static void cloudUpdate(D_Node* node, float deltaTime)
 	pos->y = cloudYCoord();
 }
 
+static void fireballUpdate(D_Node* node, float deltaTime)
+{
+	(void)node;
+	(void)deltaTime;
+}
+
+static void fireballSpawnerUpdate(D_Node* node, float deltaTime)
+{
+	D_Node* level = node->parent;
+	timeSinceLastFireBall += deltaTime;
+	if (timeSinceLastFireBall < fireBallTicksInSecs) {
+		return;
+	}
+	timeSinceLastFireBall = 0.0f;
+	// spawn fireball
+	D_Node* fireball = D_InitNode("fireball");
+	D_AddPositionComponent(fireball, 384.0f, randomFloat(-288, 288));
+	D_AddVelocityComponent(fireball, -1.0f * FIRE_SPEED, 0.0f);
+	D_Node* fireballSpriteNode = D_InitNode("fireball_sprite");
+	D_AttachChildNode(fireball, fireballSpriteNode);
+	D_AddSpriteComponent(fireballSpriteNode, fireBallSprite);
+	D_AddPositionComponent(fireballSpriteNode, -8.0f, -16.0f);
+	D_AddAnimationComponent(fireballSpriteNode, 7);
+	D_AttachChildNode(level, fireball);
+	A_RegisterUpdateCallback(&ctx, fireball, fireballUpdate);
+}
+
 int main()
 {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 	atexit(quit);
 	if (!A_Init(&ctx, "assets.hfd")) {
 		exit(EXIT_FAILURE);
 	}
 
 	D_Sprite* flappySprite = A_LoadSpriteSheet(&ctx, "sprites/flappy.png", 1, 8);
+	fireBallSprite = A_LoadSpriteSheet(&ctx, "sprites/fire.png", 1, 3);
 	D_Sprite* mountains4Sprite = A_LoadSpriteSheet(&ctx, "background/mountains_4.png", 1, 1);
 	D_Sprite* mountains1Sprite = A_LoadSpriteSheet(&ctx, "background/mountains_1.png", 1, 1);
 	D_Sprite* mountains2Sprite = A_LoadSpriteSheet(&ctx, "background/mountains_2.png", 1, 1);
@@ -153,6 +192,10 @@ int main()
 		D_AttachChildNode(level, cloud);
 		A_RegisterUpdateCallback(&ctx, cloud, cloudUpdate);
 	}
+
+	D_Node* fileBallSpawner = D_InitNode("fireball_spawner");
+	A_RegisterUpdateCallback(&ctx, fileBallSpawner, fireballSpawnerUpdate);
+	D_AttachChildNode(level, fileBallSpawner);
 	
 	D_AttachChildNode(level, flappy);
 
@@ -174,6 +217,7 @@ int main()
 	for (int i = 0; i < NUM_CLOUDS; i++) {
 		free(clouds[i]);
 	}
+	free(fireBallSprite);
 
 	return 0;
 }

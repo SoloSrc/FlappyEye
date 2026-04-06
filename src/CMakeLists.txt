@@ -5,6 +5,7 @@ find_package(Stb REQUIRED)
 
 create_zip(assets
 	"sprites/flappy.png"
+	"sprites/fire.png"
 	"background/cloud_1.png"
 	"background/cloud_2.png"
 	"background/cloud_3.png"
